@@ -5,4 +5,5 @@ typedef struct array_util{
 }ArrayUtil;
 
 ArrayUtil create(int ,int );
-int areEqual(ArrayUtil arr1, ArrayUtil arr2);
+int areEqual(ArrayUtil, ArrayUtil);
+ArrayUtil resize(ArrayUtil, int); 
