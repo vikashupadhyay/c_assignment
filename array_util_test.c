@@ -190,12 +190,18 @@ void test_for_filter_array_according_to_condition(){
 	assert(result==5);
 }
 
-int isDivisible(void *hint,void *num){
-	return *(int *)num%*(int *)hint==0;
-}
+// int isDivisible(void *hint,void *num){
+// 	return *(int *)num%*(int *)hint==0;
+// }
+
 void multiply(void *hint,void *sourceItem,void *destinationitem){
 	*(int *)destinationitem = (*(int *)hint)*(*(int *)sourceItem);
 }
+
+void increment_by_hint(void* hint, void* item){
+	*(int *)item = *(int *)item+*(int *)hint;
+};
+
 void test_for_maping(){
 	int length = 10;
 	int hint = 2;
@@ -225,3 +231,31 @@ void test_for_maping(){
 	assert(s[8]==18);
 	assert(s[9]==20);
 }
+
+void test_for_forEach_function(){
+	int length = 10;
+	int hint = 3;
+	ArrayUtil util = create(sizeof(int),10);
+	int *base = (int *)util.base;
+	base[0] = 1;
+	base[1] = 2;
+	base[2] = 3;
+	base[3] = 4;
+	base[4] = 5;
+	base[5] = 6;
+	base[6] = 7;
+	base[7] = 8;
+	base[8] = 9;
+	base[9] = 10;
+	forEach(util,increment_by_hint,&hint);
+	assert(base[0]==4);
+	assert(base[1]==5);
+	assert(base[2]==6);
+	assert(base[3]==7);
+	assert(base[4]==8);
+	assert(base[5]==9);
+	assert(base[6]==10);
+	assert(base[7]==11);
+	assert(base[8]==12);
+	assert(base[9]==13);
+};

@@ -2,6 +2,8 @@ typedef int(MatchFunc)(void *,void *);
 
 typedef void(ConvertFunc)(void *,void *,void *);
 
+typedef void(OperationFunc)(void* , void*);
+
 typedef struct array_util{
 	void *base;
 	int typeSize;
