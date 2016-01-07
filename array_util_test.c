@@ -190,9 +190,6 @@ void test_for_filter_array_according_to_condition(){
 	assert(result==5);
 }
 
-// int isDivisible(void *hint,void *num){
-// 	return *(int *)num%*(int *)hint==0;
-// }
 
 void multiply(void *hint,void *sourceItem,void *destinationitem){
 	*(int *)destinationitem = (*(int *)hint)*(*(int *)sourceItem);
@@ -259,3 +256,28 @@ void test_for_forEach_function(){
 	assert(base[8]==12);
 	assert(base[9]==13);
 };
+
+void *add(void *hint,void *previousitem,void *item){
+	*(int *)item= *((int *)previousitem)+(*(int *)item);
+	return item;
+};
+
+void test_add_every_ele_of_array(){
+	int length = 10;
+	int intialValue = 0;
+	int hint = 3;
+	ArrayUtil util = create(sizeof(int),10);
+	int *base = (int *)util.base;
+	base[0] = 1;
+	base[1] = 2;
+	base[2] = 3;
+	base[3] = 4;
+	base[4] = 5;
+	base[5] = 6;
+	base[6] = 7;
+	base[7] = 8;
+	base[8] = 9;
+	base[9] = 10;
+	int *result = reduce(util,add,&hint,&intialValue);
+	assert(*result==55);
+}
