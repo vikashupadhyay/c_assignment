@@ -1,4 +1,6 @@
-typedef int(*MatchFunc)(void *,void *);
+typedef int(MatchFunc)(void *,void *);
+
+typedef void(ConvertFunc)(void *,void *,void *);
 
 typedef struct array_util{
 	void *base;

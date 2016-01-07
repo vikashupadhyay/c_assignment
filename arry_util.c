@@ -56,19 +56,25 @@ void* findLast(ArrayUtil util, MatchFunc* match, void* hint){
 int count(ArrayUtil util, MatchFunc* match, void* hint){
 	int counter = 0; 
 	for (int i = 0; i < util.length; ++i)
-		if((*match)(&hint,util.base+i*util.typeSize))
+		if(match(&hint,util.base+i*util.typeSize))
 			counter++;
 	return counter;
 };
 
-int filter(ArrayUtil util, MatchFunc* match, void* hint, void** destination, int maxItems){
-	// *destination = (void *)realloc(*destination,maxItems);
+int filter(ArrayUtil util, MatchFunc* match, void* hint, void** destination, int maxItems){	
+	destination  = realloc(destination,maxItems);
 	int counter =0;
 	for (int i = 0; i < util.length; ++i){
-		if((*match)(hint,util.base+i*util.typeSize) && maxItems>counter){
+		if(match(hint,util.base+i*util.typeSize) && maxItems>counter){
 			destination[counter] =util.base+i*util.typeSize;
 			counter++;
 		}		
 	}
 	return counter;
+}
+
+void map(ArrayUtil source, ArrayUtil destination, ConvertFunc* convert, void* hint){
+	for (int i = 0; i < source.length; ++i){
+		convert(hint,(source.base+i*source.typeSize),(destination.base+i*destination.typeSize));
+	}
 }

@@ -91,84 +91,77 @@ int isEven(void* hint, void* item){
 void test_find_first_even_num(){
 	int size = sizeof(int);
 	int length = 4;
-	MatchFunc iseven= isEven;
 	ArrayUtil array_1 =  create(size, length);
 	int *base = ( int *)(array_1.base);
 	base[0] = 1;
 	base[1] = 3;
 	base[2] = 26;
 	base[3] = 48;
-	void *result = findFirst(array_1,&iseven,NULL);
+	void *result = findFirst(array_1,&isEven,NULL);
 	assert(*(int*)result==26);
 }
 
 void test_find_first_even_num_if_no_is_not_there(){
 	int size = sizeof(int);
 	int length = 4;
-	MatchFunc iseven= isEven;
 	ArrayUtil array_1 =  create(size, length);
 	int *base = ( int *)(array_1.base);
 	base[0] = 1;
 	base[1] = 3;
 	base[2] = 5;
 	base[3] = 7;
-	void *result = findFirst(array_1,&iseven,NULL);
+	void *result = findFirst(array_1,&isEven,NULL);
 	 assert((int*)result==0);
 }
 
 void test_last_even_num(){
 	int length = 4;
-	MatchFunc iseven= isEven;
 	ArrayUtil arr_1 = create(sizeof(int),length);
 	int *base = (int *)arr_1.base;
 	base[0] = 2;
 	base[1] = 4;
 	base[2] = 6;
 	base[3] = 8;
-	void *result = findLast(arr_1,&iseven,NULL);
+	void *result = findLast(arr_1,&isEven,NULL);
 	assert(*(int*)result==8);
 }
 void test_find_last_even_num_if_no_is_not_there(){
 	int length = 4;
-	MatchFunc iseven= isEven;
 	ArrayUtil arr_1 = create(sizeof(int),length);
 	int *base = (int *)arr_1.base;
 	base[0] = 1;
 	base[1] = 3;
 	base[2] = 5;
 	base[3] = 7;
-	void *result = findLast(arr_1,&iseven,NULL);
+	void *result = findLast(arr_1,isEven,NULL);
 	assert((int*)result==0);
 }
 void test_count_num_which_are_matching_condition(){
 	int length = 4;
-	MatchFunc iseven= isEven;
 	ArrayUtil arr_1 = create(sizeof(int),length);
 	int *base = (int *)arr_1.base;
 	base[0] = 2;
 	base[1] = 4;
 	base[2] = 6;
 	base[3] = 8;
-	int result = count(arr_1,&iseven,NULL);
+	int result = count(arr_1,&isEven,NULL);
 	assert(result==4);
 }
 void test_count_num_which_are_not_matching_condition(){
 	int length = 4;
-	MatchFunc iseven= isEven;
 	ArrayUtil arr_1 = create(sizeof(int),length);
 	int *base = (int *)arr_1.base;
 	base[0] = 1;
 	base[1] = 3;
 	base[2] = 5;
 	base[3] = 7;
-	int result = count(arr_1,&iseven,NULL);
+	int result = count(arr_1,&isEven,NULL);
 	assert(result==0);
 }
 
 void test_for_filter_array_according_to_condition(){
 	int length = 10;
 	int maxItems = 5;
-	MatchFunc iseven= isEven;
 	ArrayUtil arr_1 = create(sizeof(int),length);
 	int *base = (int *)arr_1.base;
 	ArrayUtil _destination = create(sizeof(int),maxItems);
@@ -183,16 +176,52 @@ void test_for_filter_array_according_to_condition(){
 	base[7] = 8;
 	base[8] = 9;
 	base[9] = 10;
-	int result = filter(arr_1, &iseven, NULL, destination, maxItems);
+	int result = filter(arr_1, isEven, NULL, destination, maxItems);
+	int *s = (int *)*destination;
+	assert(*(s+0)==2);
+	s=s+1;
+	assert(*(s+1)==4);
+	s=s+1;
+	assert(*(s+2)==6);
+	s=s+1;
+	assert(*(s+3)==8);
+	s=s+1;
+	assert(*(s+4)==10);
 	assert(result==5);
-	// int *s = (int*)destination;
-	// printf("%d num is \n",*(int*)(destination +24));
-	// assert(*(int*)destination==2);
-	// assert(*((int *)destination+1)==4);
-	// for (int i = 0; i <=5; i++)
-	// {	
-	// 	printf("------------------%p\n", s);
-	// 	s=s+4;
-	// 	// assert(s[i]==2*i);
-	// }
+}
+
+int isDivisible(void *hint,void *num){
+	return *(int *)num%*(int *)hint==0;
+}
+void multiply(void *hint,void *sourceItem,void *destinationitem){
+	*(int *)destinationitem = (*(int *)hint)*(*(int *)sourceItem);
+}
+void test_for_maping(){
+	int length = 10;
+	int hint = 2;
+	ArrayUtil source = create(sizeof(int),length);
+	int *base = (int *)source.base;
+	base[0] = 1;
+	base[1] = 2;
+	base[2] = 3;
+	base[3] = 4;
+	base[4] = 5;
+	base[5] = 6;
+	base[6] = 7;
+	base[7] = 8;
+	base[8] = 9;
+	base[9] = 10;
+	ArrayUtil destination = create(sizeof(int),length);
+	map(source, destination, multiply,&hint);
+	int *s = (int *)destination.base;
+	assert(s[0]==2);
+	assert(s[1]==4);
+	assert(s[2]==6);
+	assert(s[3]==8);
+	assert(s[4]==10);
+	assert(s[5]==12);
+	assert(s[6]==14);
+	assert(s[7]==16);
+	assert(s[8]==18);
+	assert(s[9]==20);
 }
